@@ -1,0 +1,76 @@
+:root {
+	--btn0: hsl(32, 100%, 60%);
+	--btn1: hsl(64, 100%, 60%);
+	--btn2: hsl(96, 100%, 60%);
+	--btn3: hsl(128, 100%, 60%);
+	--btn4: hsl(160, 100%, 60%);
+	--btn5: hsl(192, 100%, 60%);
+	--btn6: hsl(224, 100%, 60%);
+	--btn7: hsl(256, 100%, 60%);
+	--btn8: hsl(288, 100%, 60%);
+	--btn9: hsl(320, 100%, 60%);
+	--abort: hsl(0, 100%, 40%);
+	--abortBackground: hsla(0, 100%, 40%, 0.7);
+	--confirm: hsl(90, 100%, 40%);
+}
+
+* {
+	margin: 0;
+	box-sizing: border-box;
+}
+
+.main {
+	text-align: center;
+	display: flex;
+	width: 100vw;
+	height: 100vh;
+	align-items: center;
+	justify-content: center;
+	background-color: antiquewhite;
+}
+
+.content {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	width: 75%;
+	height: 100%;
+	overflow: hidden;
+}
+
+.recap {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 25%;
+	height: 100%;
+	min-width: 250px;
+}
+
+/* Talbet */
+@media (max-width: 1080px) {
+	.main {
+		display: flex;
+		flex-direction: column;
+		overflow: auto;
+		height: auto;
+		min-height: 100vh;
+		padding: 5% 0;
+	}
+
+	.content {
+		height: fit-content;
+		overflow: visible;
+		width: 100%;
+		margin-bottom: 10%;
+	}
+
+	.recap {
+		height: fit-content;
+		width: 100%;
+	}
+}
+
+/* 
+@media (max-width: 768px) {} 
+*/

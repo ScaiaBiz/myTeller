@@ -1,0 +1,50 @@
+{"buttons":[{
+        "_id": 0,
+        "name": "Nullo",
+        "prezzo": 0
+    },
+    {
+        "_id": 1,
+        "name": "Primo",
+        "prezzo": 1
+    },
+    {
+        "_id": 2,
+        "name": "Secondo",
+        "prezzo": 2
+    },
+    {
+        "_id": 3,
+        "name": "Terzo",
+        "prezzo": 3
+    },
+    {
+        "_id": 4,
+        "name": "Quarto",
+        "prezzo": 4
+    },
+    {
+        "_id": 5,
+        "name": "Quinto",
+        "prezzo": 5
+    },
+    {
+        "_id": 6,
+        "name": "Sesto",
+        "prezzo": 6
+    },
+    {
+        "_id": 7,
+        "name": "Settimo",
+        "prezzo": 7
+    },
+    {
+        "_id": 8,
+        "name": "Ottavo",
+        "prezzo": 8
+    },
+    {
+        "_id": 9,
+        "name": "Nono",
+        "prezzo": 9
+    }]}

@@ -1,0 +1,41 @@
+{"buttons":[{
+        "_id": 0,
+        "name": "Birra",
+        "prezzo": 2
+    },
+    {
+        "_id": 1,
+        "name": "Bibita",
+        "prezzo": 2
+    },
+    {
+        "_id": 2,
+        "name": "Cocktail",
+        "prezzo": 5
+    },
+    {
+        "_id": 3,
+        "name": "Vino",
+        "prezzo": 2
+    },
+    {
+        "_id": 4,
+        "name": "Acqua",
+        "prezzo": 1
+    },
+    {
+        "_id": 5,
+        "name": "Panino",
+        "prezzo": 4
+    },
+    {
+        "_id": 6,
+        "name": "Treccine",
+        "prezzo": 4
+    },
+    {
+        "_id": 7,
+        "name": "Cena",
+        "prezzo": 8
+    }
+    ]}

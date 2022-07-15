@@ -1,0 +1,120 @@
+.hoverBackground {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: var(--abortBackground);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	z-index: 1;
+}
+
+.container {
+	position: fixed;
+	left: 25%;
+	top: 5%;
+	width: 50%;
+	height: 80%;
+	z-index: 50;
+	border: 2px solid black;
+	box-shadow: black 0px 0px 25px;
+	border-radius: 10px;
+	background-color: white;
+	display: flex;
+	align-items: center;
+	text-align: center;
+}
+
+.culumns {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.left {
+	width: 70%;
+}
+
+.right {
+	width: 30%;
+	height: 60%;
+}
+
+.itemName {
+	text-decoration: underline;
+}
+
+.priceInfo {
+	display: flex;
+	width: 100%;
+	align-items: center;
+	justify-content: space-evenly;
+}
+
+.button {
+	padding: 2% 0%;
+	width: 90%;
+	font-size: 2rem;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.confirmation {
+	text-shadow: white 1px 0px 5px;
+	background-color: var(--confirm);
+	height: 50%;
+}
+
+.abort {
+	background-color: var(--abort);
+	color: white;
+	height: 22%;
+}
+
+@media (max-width: 1080px) {
+	.container {
+		width: 90%;
+		height: 98%;
+		top: 1%;
+		left: 5%;
+		flex-direction: column;
+		font-size: 0.8rem;
+	}
+	.culumns {
+		width: 100%;
+	}
+
+	.priceInfo {
+		justify-content: space-around;
+	}
+
+	.right {
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		height: 15%;
+		width: 85%;
+	}
+
+	.button {
+		height: 70%;
+		padding: 0;
+	}
+
+	.abort {
+		width: fit-content;
+		font-size: 1.2rem;
+		padding: 0 5%;
+	}
+
+	.confirmation {
+		width: 55%;
+	}
+}

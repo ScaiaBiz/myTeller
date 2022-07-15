@@ -1,0 +1,28 @@
+.button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	width: 20%;
+	min-height: 120px;
+	min-width: 300px;
+	width: 25%;
+	height: 20%;
+	max-height: 200px;
+	margin: 2%;
+	border: 1px solid black;
+	border-radius: 5px;
+	box-shadow: grey 5px 5px 10px;
+	text-shadow: white 0px 0px 7px;
+}
+
+@media (max-width: 1080px) {
+	.button {
+		min-width: 150px;
+		min-height: 80px;
+		font-size: 0.7rem;
+	}
+	.button h2 {
+		font-size: 1.6rem;
+	}
+}

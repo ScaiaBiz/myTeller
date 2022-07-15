@@ -1,0 +1,17 @@
+.container {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	max-height: 100%;
+	overflow: auto;
+}
+
+.buttons {
+	display: flex;
+	flex-wrap: wrap;
+	width: 100%;
+	justify-content: center;
+	overflow: auto;
+}
