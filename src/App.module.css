@@ -12,11 +12,13 @@
 	--abort: hsl(0, 100%, 40%);
 	--abortBackground: hsla(0, 100%, 40%, 0.7);
 	--confirm: hsl(90, 100%, 40%);
+	--paymentBacground: hsla(0, 0%, 0%, 0.75);
 }
 
 * {
 	margin: 0;
 	box-sizing: border-box;
+	user-select: none;
 }
 
 .main {

@@ -1,13 +1,44 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
+
 import classes from './Recap.module.css';
 
-function Recap({ list, removeElement, endOrder }) {
+import AskTotale from './AskTotale';
+
+function Recap({ list, setBuyngList, removeElement, endOrder, addNewMessage }) {
+	const [showPayment, setShowPayment] = useState(null);
+
+	const showPaymentHandler = () => {
+		setShowPayment(!showPayment);
+	};
+
 	const printTotalPrice = () => {
 		let total = 0;
 		list.map(el => {
 			total += el.prezzo * el.quantity;
 		});
 		return total;
+	};
+
+	const paymentConfirmation = () => {
+		const formPayment = (
+			<AskTotale
+				list={list}
+				totalPrice={printTotalPrice()}
+				action={endOrder}
+				clear={showPaymentHandler}
+			/>
+		);
+
+		return ReactDOM.createPortal(
+			formPayment,
+			document.getElementById('askQty')
+		);
+	};
+
+	const abortOrder = () => {
+		addNewMessage('MESSAGE', 'Ordine annullato');
+		setBuyngList([]);
 	};
 
 	const getListData = () => {
@@ -34,24 +65,27 @@ function Recap({ list, removeElement, endOrder }) {
 	};
 
 	return (
-		<div className={classes.container}>
-			<div className={classes.list}>{getListData()}</div>
-			<div className={classes.footer}>
-				<h1 className={classes.total}>Totale: {printTotalPrice()}</h1>
-				<div
-					className={`${classes.button} ${classes.confirmation}`}
-					onClick={() => endOrder(true)}
-				>
-					Ok
-				</div>
-				<div
-					className={`${classes.button} ${classes.abort}`}
-					onClick={endOrder}
-				>
-					Annulla
+		<React.Fragment>
+			{showPayment && paymentConfirmation()}
+			<div className={classes.container}>
+				<div className={classes.list}>{getListData()}</div>
+				<div className={classes.footer}>
+					<h1 className={classes.total}>Totale: {printTotalPrice()}</h1>
+					<div
+						className={`${classes.button} ${classes.confirmation}`}
+						onClick={showPaymentHandler}
+					>
+						Pagamento
+					</div>
+					<div
+						className={`${classes.button} ${classes.abort}`}
+						onClick={abortOrder}
+					>
+						Cancella tutto
+					</div>
 				</div>
 			</div>
-		</div>
+		</React.Fragment>
 	);
 }
 

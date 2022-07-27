@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import classes from './AskQuantity.module.css';
+import classes from './AskTotale.module.css';
 
 import Keyboard from '../kommon/Keyboard';
 
-function AskQuantity({ item, confirm, clear }) {
+import { usePopupMes } from '../hooks/usePopupMes';
+
+function AskTotale({ list, totalPrice, action, clear }) {
 	const [qty, setQty] = useState('0');
 	const [isFirst, setIsFirst] = useState(true);
+
+	// const {}=usePopupMes()
 
 	const changeQty = value => {
 		switch (value) {
@@ -33,27 +37,24 @@ function AskQuantity({ item, confirm, clear }) {
 		}
 	};
 
+	const confirmation = () => {
+		action((totalPrice > 0 && qty > 0) || qty > 0);
+		clear();
+	};
+
 	return (
 		<React.Fragment>
 			<div className={classes?.hoverBackground} onClick={clear} />
 			<div className={classes.container}>
 				<div className={`${classes.culumns} ${classes.left}`}>
-					<h2>
-						<h1 className={classes.itemName}>{item.name}</h1>Prezzo:{' '}
-						{Number(item.prezzo)}€
-					</h2>
-					<div className={classes.priceInfo}>
-						<h1>
-							Quantità:
-							<p>{Number(qty)}</p>
-						</h1>
-						<h1>
-							Totale:
-							<p style={Number(qty) > 0 ? { color: `var(--abort)` } : {}}>
-								{Number(item.prezzo) * Number(qty)}€
-							</p>
-						</h1>
-					</div>
+					<h1 className={classes.itemName}>Totale: {Number(totalPrice)}€</h1>
+					<h1>Dato: {Number(qty)}</h1>
+					<h1>
+						Resto:{' '}
+						<b style={Number(qty) > 0 ? { color: `var(--confirm)` } : {}}>
+							{Number(qty) > 0 ? Number(qty) - Number(totalPrice) : '0'}€
+						</b>
+					</h1>
 					<Keyboard action={changeQty} />
 				</div>
 				<div className={`${classes.culumns} ${classes.right}`}>
@@ -62,9 +63,9 @@ function AskQuantity({ item, confirm, clear }) {
 					</div>
 					<div
 						className={`${classes.button} ${classes.confirmation}`}
-						onClick={() => confirm(Number(qty))}
+						onClick={confirmation}
 					>
-						Ok
+						Esegui
 					</div>
 				</div>
 			</div>
@@ -72,4 +73,4 @@ function AskQuantity({ item, confirm, clear }) {
 	);
 }
 
-export default AskQuantity;
+export default AskTotale;

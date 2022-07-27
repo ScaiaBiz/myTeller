@@ -1,11 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import classes from './App.module.css';
 
+import PopupBoard from './kommon/popup/PopupBoard';
 import ButtonsBoard from './comps/ButtonsBoard';
 import Recap from './comps/Recap';
-import Keyboard from './kommon/Keyboard';
+
+import { usePopupMes } from './hooks/usePopupMes';
 
 function App() {
+	//PopupMessage ---------------------------------------------
+	// const { removeMessage, messages, addNewMessage } = usePopupMes();
+
+	//fixme: Meglio ma non meglissimo verificare come gestire con un hook o con useReducer
+
+	const [messages, setMessages] = useState([]);
+	const [count, setCount] = useState(1);
+
+	const ref = useRef('');
+
+	useEffect(() => {
+		ref.current = count;
+		// console.log(ref.current);
+	}, [count]);
+
+	const removeMessage = id => {
+		const mes = messages.filter(m => {
+			return id != m._id;
+		});
+		setMessages(mes);
+	};
+
+	const addNewMessage = (type, text) => {
+		// console.log('Aggiungo messaggio: ' + text);
+		const newMessage = {
+			_id: Date.now(),
+			type: type,
+			text: ref.current + ': ' + text,
+		};
+		const mess = [newMessage, ...messages];
+		setMessages(mess);
+		setCount(count + 1);
+		// console.log('messaggio aggiunto');
+		if (type === 'ERROR') {
+			return false;
+		}
+		return true;
+	};
+
+	//Shopping List Handler ------------------------------------
 	const [buyngList, setBuyngList] = useState([]);
 
 	const addToList = element => {
@@ -26,22 +68,34 @@ function App() {
 	};
 
 	const endOrder = post => {
+		let _result;
 		if (post === true) {
 			console.log('Posto il dato');
+			_result = addNewMessage('OK', 'Nuovo incasso registrato');
+		} else {
+			console.log('Post non confermato');
+			_result = addNewMessage('ERROR', 'Impossibile registrare incasso');
 		}
-		setBuyngList([]);
+		_result && setBuyngList([]);
 	};
 
 	return (
 		<div className={classes.main}>
+			<PopupBoard
+				messages={messages}
+				removeMessage={removeMessage}
+				addNewMessage={addNewMessage}
+			/>
 			<div className={classes.content}>
 				<ButtonsBoard add={addToList} />
 			</div>
 			<div className={classes.recap}>
 				<Recap
 					list={buyngList}
+					setBuyngList={setBuyngList}
 					removeElement={removeToList}
 					endOrder={endOrder}
+					addNewMessage={addNewMessage}
 				/>
 			</div>
 		</div>
@@ -50,10 +104,8 @@ function App() {
 
 export default App;
 /**
- * //TODO: Iniziare compliazione RECAP
  * //TODO: Registrare [articolo, quantità, prezzo, data/ora]
- * //TODO: Calcolare costo totale mappando singoli prezzi x quantità
- *
+ * //TODO: Creare pagina setup articoli
  *
  * //Todo: Creare pagine settaggi per definire nome e prezzo articolo
  */
