@@ -10,7 +10,7 @@ import AskQuantity from './AskQuantity';
 
 function ButtonsBoard({ add }) {
 	const _buttons = buttons.buttons;
-	const [buttonsData, setButtonsData] = useState(_buttons);
+	const [buttonsData, setButtonsData] = useState([]);
 	const [showAskQty, setShowAskQty] = useState(false);
 	const [selected, setSelected] = useState(null);
 
@@ -46,6 +46,17 @@ function ButtonsBoard({ add }) {
 			setSelected(null);
 		}
 	}, [showAskQty]);
+
+	useEffect(() => {
+		const _data = localStorage.getItem('myTellerData');
+		if (!_data) {
+			console.log('LocalStorage vuoto');
+			localStorage.setItem('myTellerData', JSON.stringify(_buttons));
+			setButtonsData(_buttons);
+		} else {
+			setButtonsData(JSON.parse(_data));
+		}
+	}, []);
 
 	const getButtons = () => {
 		const but = buttonsData?.map(btn => {

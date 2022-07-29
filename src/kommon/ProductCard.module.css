@@ -3,10 +3,9 @@
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
-	width: 20%;
 	min-height: 120px;
-	min-width: 300px;
-	width: 25%;
+	min-width: 200px;
+	width: 10%;
 	height: 20%;
 	max-height: 200px;
 	margin: 2%;

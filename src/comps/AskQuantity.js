@@ -62,7 +62,7 @@ function AskQuantity({ item, confirm, clear }) {
 					</div>
 					<div
 						className={`${classes.button} ${classes.confirmation}`}
-						onClick={() => confirm(Number(qty))}
+						onClick={() => Number(qty) > 0 && confirm(Number(qty))}
 					>
 						Ok
 					</div>
