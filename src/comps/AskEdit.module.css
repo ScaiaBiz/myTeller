@@ -1,0 +1,125 @@
+.container {
+	position: fixed;
+	top: 0%;
+	left: 0%;
+	height: 100%;
+	width: 100%;
+	background-color: hsla(0, 0%, 50%, 0.7);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	z-index: 1;
+}
+
+.content {
+	position: fixed;
+	left: 25%;
+	top: 25%;
+	width: 50%;
+	height: 50%;
+	z-index: 50;
+	border: 2px solid black;
+	box-shadow: black 0px 0px 25px;
+	border-radius: 10px;
+	background-color: white;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-around;
+	text-align: center;
+}
+
+.editForm {
+	width: 80%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+
+.editInput {
+	padding: 1%;
+	margin-bottom: 20px;
+	text-align: center;
+	font-size: 2.2rem;
+}
+
+.checkDelete {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 2rem;
+}
+.checkbox {
+	font-size: 2rem;
+	transform: scale(2);
+	margin-right: 20px;
+}
+
+.buttons {
+	width: 80%;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+}
+
+.btn {
+	font-size: 2.2rem;
+	padding: 1%;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.btnSave {
+	background-color: var(--confirm);
+	width: 50%;
+}
+
+.btnAbort {
+	background-color: var(--abort);
+	width: 25%;
+	color: white;
+}
+
+@media (max-width: 1080px) {
+	.productRow {
+		width: 90%;
+	}
+
+	.content {
+		left: 10%;
+		top: 10%;
+		width: 80%;
+		height: 80%;
+	}
+
+	.checkDelete {
+		font-size: 1.5rem;
+	}
+
+	.buttons {
+		flex-direction: column;
+		justify-content: space-between;
+	}
+
+	.btn {
+		width: 100%;
+	}
+
+	.btnSave {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 70%;
+		margin-bottom: 20px;
+	}
+
+	.btnAbort {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 1.5rem;
+		height: 30%;
+	}
+}

@@ -27,7 +27,6 @@ function App() {
 
 	useEffect(() => {
 		ref.current = count;
-		// console.log(ref.current);
 	}, [count]);
 
 	const removeMessage = id => {
@@ -38,7 +37,6 @@ function App() {
 	};
 
 	const addNewMessage = (type, text) => {
-		// console.log('Aggiungo messaggio: ' + text);
 		const newMessage = {
 			_id: Date.now(),
 			type: type,
@@ -47,7 +45,6 @@ function App() {
 		const mess = [newMessage, ...messages];
 		setMessages(mess);
 		setCount(count + 1);
-		// console.log('messaggio aggiunto');
 		if (type === 'ERROR') {
 			return false;
 		}
@@ -77,10 +74,8 @@ function App() {
 	const endOrder = post => {
 		let _result;
 		if (post === true) {
-			console.log('Posto il dato');
 			_result = addNewMessage('OK', 'Nuovo incasso registrato');
 		} else {
-			console.log('Post non confermato');
 			_result = addNewMessage('ERROR', 'Impossibile registrare incasso');
 		}
 		_result && setBuyngList([]);
