@@ -38,7 +38,7 @@ function AskTotale({ list, totalPrice, action, clear }) {
 	};
 
 	const confirmation = () => {
-		action(totalPrice > 0 || qty > 0);
+		action(totalPrice > 0 || qty > 0, totalPrice || qty);
 		clear();
 	};
 
