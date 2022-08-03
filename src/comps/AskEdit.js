@@ -3,7 +3,13 @@ import React, { useState, useEffect } from 'react';
 import classes from './AskEdit.module.css';
 
 function AskEdit({ item, clear, confirm }) {
-	const [itemData, setItemData] = useState(item);
+	let itm = item;
+	if (item === 'NEW') {
+		itm = { _id: Date.now(), name: '', prezzo: '' };
+		item = null;
+	}
+
+	const [itemData, setItemData] = useState(itm);
 
 	const inputHandler = e => {
 		const value = e.target.value;
@@ -15,6 +21,8 @@ function AskEdit({ item, clear, confirm }) {
 
 	const doAction = e => {
 		const newData = itemData;
+		console.log('AksEdit');
+		console.log(newData);
 		newData.toDelete = document.getElementById('deleteProduct').checked;
 		confirm(newData);
 	};
@@ -24,7 +32,7 @@ function AskEdit({ item, clear, confirm }) {
 			<div className={classes?.container} onClick={clear} />
 			<div className={classes.content}>
 				<h1>
-					{item.name} - {item.prezzo}€
+					{itemData.name} - {itemData.prezzo}€
 				</h1>
 				<form className={classes.editForm}>
 					<label htmlFor='name'>Prodotto:</label>

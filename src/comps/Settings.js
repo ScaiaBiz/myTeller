@@ -10,6 +10,8 @@ function Settings({ clear }) {
 	const [visulaData, setVisulaData] = useState(null);
 	const [showAskEdit, setShowAskEdit] = useState(false);
 	const [selected, setSelected] = useState(null);
+	const [isNew, setIsNew] = useState(false);
+	const [reloadNeeded, setReloadNeeded] = useState(false);
 
 	//>>>>>>>>>>>>>>>>>>>> Modifica dati <<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -19,32 +21,47 @@ function Settings({ clear }) {
 
 	const modifySelected = el => {
 		handelShowAskEdit();
-		// console.log(el);
-		// console.log('');
-		const newData = data
-			.filter(e => {
-				if (e.toDelete) {
-					console.log('deletto');
-					return false;
-				}
-				return true;
-			})
-			.map(d => {
-				// console.log(d);
-				if (d._id == el._id) {
-					// console.log('Trovato elemento da modificare:');
-					const newEl = { ...d };
-					newEl._id = el._id;
-					newEl.name = el.name;
-					newEl.prezzo = Number(el.prezzo);
-					// console.log('Nuovo elemento:');
-					// console.log(newEl);
-					return newEl;
-				}
-				return d;
+		let newData = [];
+		let count = 0;
+		if (isNew) {
+			newData = data.map(d => {
+				const newEl = { ...d };
+				newEl._id = count;
+				count++;
+				// if (d._id == el._id) {
+				// 	newEl.name = el.name;
+				// 	newEl.prezzo = Number(el.prezzo);
+				// }
+				console.log(count);
+				console.log(newEl);
+				return newEl;
 			});
-
-		setProductData(newData);
+			el._id = count;
+			setProductData([...newData, el]);
+			setIsNew(false);
+		} else {
+			newData = data
+				.filter(e => {
+					if (e.toDelete) {
+						console.log('deletto');
+						return false;
+					}
+					return true;
+				})
+				.map(d => {
+					const newEl = { ...d };
+					newEl._id = count;
+					count++;
+					if (d._id == el._id) {
+						newEl.name = el.name;
+						newEl.prezzo = Number(el.prezzo);
+					}
+					console.log(count);
+					console.log(newEl);
+					return newEl;
+				});
+			setProductData(newData);
+		}
 	};
 
 	const activateAskEdit = () => {
@@ -56,6 +73,11 @@ function Settings({ clear }) {
 			/>
 		);
 		return ReactDOM.createPortal(formEdit, document.getElementById('askQty'));
+	};
+
+	const addNewProduct = () => {
+		setIsNew(true);
+		setSelected('NEW');
 	};
 
 	useEffect(() => {
@@ -72,14 +94,15 @@ function Settings({ clear }) {
 
 	//>>>>>>>>>>>>>>>>>>>> Gestisci dati prodotti <<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-	const getProductsData = async () => {
+	const getProductsData = () => {
 		const _data = JSON.parse(localStorage.getItem('myTellerData'));
-		console.log(_data);
 		setData(_data);
 	};
 
-	const setProductData = async pData => {
+	const setProductData = pData => {
+		console.log(pData);
 		localStorage.setItem('myTellerData', JSON.stringify(pData));
+		setReloadNeeded(true);
 		getProductsData();
 	};
 
@@ -111,11 +134,13 @@ function Settings({ clear }) {
 		<React.Fragment>
 			{showAskEdit && activateAskEdit()}
 			<div className={classes.container}>
-				<h1 className={classes.closer} onClick={() => clear()}>
+				<h1 className={classes.closer} onClick={() => clear(reloadNeeded)}>
 					Chiudi
 				</h1>
-				<p className={classes.productContainer}>{visulaData}</p>
-				<h1 className={classes.productAdd}>Aggiungi</h1>
+				<div className={classes.productContainer}>{visulaData}</div>
+				<h1 className={classes.productAdd} onClick={addNewProduct}>
+					Aggiungi
+				</h1>
 			</div>
 		</React.Fragment>
 	);

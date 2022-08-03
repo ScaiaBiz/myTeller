@@ -12,8 +12,6 @@ import Settings from './comps/Settings';
 import iconSettings from './assets/settings_48.png';
 import iconChart from './assets/chart_48.png';
 
-import { usePopupMes } from './hooks/usePopupMes';
-
 function App() {
 	//PopupMessage ---------------------------------------------
 	// const { removeMessage, messages, addNewMessage } = usePopupMes();
@@ -22,6 +20,8 @@ function App() {
 
 	const [messages, setMessages] = useState([]);
 	const [count, setCount] = useState(1);
+	const [showButtons, setShowButtons] = useState(false);
+	const [loadData, setLoadData] = useState(false);
 
 	const ref = useRef('');
 
@@ -86,18 +86,45 @@ function App() {
 	const [showSettings, setShowSettings] = useState(false);
 	const [showTotals, setShowTotals] = useState(false);
 
-	const showSettingsHandler = () => {
+	const showSettingsHandler = r => {
+		console.log({ r });
+		if (r === true) {
+			setLoadData(true);
+			addNewMessage('MESSAGE', 'Modifiche inserite');
+		}
 		setShowSettings(!showSettings);
 	};
 
 	const openSettings = () => {
 		const formPayment = <Settings clear={showSettingsHandler} />;
-
 		return ReactDOM.createPortal(
 			formPayment,
 			document.getElementById('overData')
 		);
 	};
+
+	//Handle reloading
+
+	const showButtonsHandler = () => {
+		setShowButtons(!showButtons);
+		if (loadData) {
+			setLoadData(false);
+		}
+	};
+
+	useEffect(() => {
+		console.log({ loadData });
+		if (loadData) {
+			showButtonsHandler();
+		}
+	}, [loadData]);
+
+	useEffect(() => {
+		console.log({ showButtons });
+		if (!showButtons) {
+			setLoadData(true);
+		}
+	}, [showButtons]);
 
 	return (
 		<React.Fragment>
@@ -117,7 +144,7 @@ function App() {
 						/>
 						<img src={iconChart} className={classes.icons} />
 					</div>
-					<ButtonsBoard add={addToList} />
+					{showButtons && <ButtonsBoard add={addToList} />}
 				</div>
 				<div className={classes.recap}>
 					<Recap
