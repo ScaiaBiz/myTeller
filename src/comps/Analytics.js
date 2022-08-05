@@ -25,7 +25,7 @@ function Analytics({ clear }) {
 							Pz. {productsEarns[p].qty}
 						</span>{' '}
 						<span className={classes.prodLine__data}>
-							Tot: {productsEarns[p].totEarn * 1000}€
+							Tot: {productsEarns[p].totEarn}€
 						</span>
 					</div>
 				);
