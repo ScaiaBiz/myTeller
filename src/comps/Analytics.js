@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import classes from './Analytics.module.css';
 
 function Analytics({ clear }) {
+	const [update, setUpdate] = useState(false);
+
 	let totalEarn = JSON.parse(window.localStorage.getItem('myTellerTotalEarn'));
 
 	const getProductsEearn = () => {
@@ -34,6 +36,15 @@ function Analytics({ clear }) {
 		}
 	};
 
+	const resetEarnsData = () => {
+		console.log('Azzero dati in localStorage');
+		// localStorage.setItem('myTellerData', JSON.stringify(pData));
+		localStorage.setItem('myTellerMovments', JSON.stringify([]));
+		localStorage.setItem('myTellerTotalQuantity', JSON.stringify([]));
+		localStorage.setItem('myTellerTotalEarn', JSON.stringify({ euro: 0 }));
+		setUpdate(!update);
+	};
+
 	return (
 		<div className={classes.container}>
 			<h1 className={classes.closer} onClick={() => clear()}>
@@ -44,13 +55,15 @@ function Analytics({ clear }) {
 					className={classes.total}
 					onClick={() => console.log('Analytics cliccato')}
 				>
-					{/* Analytics */}
-					Totale incassi: {totalEarn.euro}€
+					Totale incassi: {totalEarn?.euro}€
 				</h1>
 				<div className={classes.specification}>
 					Di cui:
 					{getProductsEearn()}
 				</div>
+				<h1 className={classes.reset} onClick={resetEarnsData} update>
+					Cancella dati incassi
+				</h1>
 			</div>
 		</div>
 	);

@@ -57,6 +57,16 @@
 	/* background-color: red; */
 }
 
+.reset {
+	color: var(--abort);
+	margin-top: 30px;
+	cursor: pointer;
+}
+
+.reset:hover {
+	text-shadow: var(--paymentBacground) 1px 1px 5px;
+}
+
 @media (max-width: 1080px) {
 	.data {
 		width: 100%;
