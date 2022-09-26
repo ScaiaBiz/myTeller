@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/myTeller/static/css/main.ad532eda.css",
+    "main.js": "/myTeller/static/js/main.bc822220.js",
+    "static/js/787.5f52d1a5.chunk.js": "/myTeller/static/js/787.5f52d1a5.chunk.js",
+    "index.html": "/myTeller/index.html",
+    "main.ad532eda.css.map": "/myTeller/static/css/main.ad532eda.css.map",
+    "main.bc822220.js.map": "/myTeller/static/js/main.bc822220.js.map",
+    "787.5f52d1a5.chunk.js.map": "/myTeller/static/js/787.5f52d1a5.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ad532eda.css",
+    "static/js/main.bc822220.js"
+  ]
+}
