@@ -46,9 +46,7 @@ function Recap({ list, setBuyngList, removeElement, endOrder, addNewMessage }) {
 			return (
 				<div className={classes.list__element}>
 					<div className={classes.list__element__value}>
-						<h2>
-							{el.quantity} x {el.name} = {el.prezzo * el.quantity}€
-						</h2>
+						{`${el.quantity} x ${el.name} = ${el.prezzo * el.quantity}€`}
 					</div>
 
 					<div
@@ -56,7 +54,7 @@ function Recap({ list, setBuyngList, removeElement, endOrder, addNewMessage }) {
 						on
 						onClick={() => removeElement(el._id)}
 					>
-						<h1>X</h1>
+						X
 					</div>
 				</div>
 			);
@@ -64,13 +62,59 @@ function Recap({ list, setBuyngList, removeElement, endOrder, addNewMessage }) {
 		return data;
 	};
 
+	// const printTest =
+
+	const a = {
+		0: {
+			type: 0,
+			content: 'My Business Title',
+			bold: 1,
+			align: 2,
+			format: 3,
+		},
+		1: {
+			type: 2,
+			value: '1234567890123',
+			width: 300,
+			height: 150,
+			align: 0,
+		},
+		2: { type: 3, value: 'sample qr text', size: 40, align: 2 },
+		3: {
+			type: 4,
+			content:
+				'<div align="center" style="font-size:17px;"></b>This is an HTML text</b></div><br /><br />Another text',
+		},
+		4: { type: 0, content: ' ', bold: 0, align: 0 },
+		5: {
+			type: 0,
+			content: 'This text has<br />two lines',
+			bold: 0,
+			align: 0,
+		},
+	};
+
 	return (
 		<React.Fragment>
 			{showPayment && paymentConfirmation()}
 			<div className={classes.container}>
-				<div className={classes.list}>{getListData()}</div>
+				<div className={classes.list}>
+					<div className={classes.list_header}>Testata</div>
+					{getListData()}
+					<div className={classes.list_footer}>
+						Totale: {printTotalPrice()}€
+					</div>
+				</div>
 				<div className={classes.footer}>
-					<h1 className={classes.total}>Totale: {printTotalPrice()}</h1>
+					<h1 className={classes.total}>Totale: {printTotalPrice()}€</h1>
+					<div
+						className={`${classes.button} ${classes.print}`}
+						// onClick={() => window.print()}
+					>
+						<a href='my.bluetoothprint.scheme://http://192.168.1.12:3001/getProudctButtons'>
+							Stampa
+						</a>
+					</div>
 					<div
 						className={`${classes.button} ${classes.confirmation}`}
 						onClick={showPaymentHandler}

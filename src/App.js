@@ -219,8 +219,6 @@ function App() {
 		<React.Fragment>
 			{showSettings && openSettings()}
 			{showAnalytics && openAnalytics()}
-			{/* <div onClick={() => updateTotalQty(buyngList)}>Test</div> */}
-			{/* <div onClick={() => endOrder(true, 50)}>Test</div> */}
 
 			<div className={classes.main}>
 				<PopupBoard

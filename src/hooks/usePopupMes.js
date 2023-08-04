@@ -11,7 +11,6 @@ export const usePopupMes = () => {
 	};
 
 	const addNewMessage = async (type, text) => {
-		console.log('Aggiungo messaggio: ' + text);
 		const newMessage = {
 			_id: Date.now(),
 			type: type,
@@ -19,7 +18,6 @@ export const usePopupMes = () => {
 		};
 		const mess = [newMessage, ...messages];
 		setMessages(mess);
-		console.log('messaggio aggiunto');
 		return true;
 	};
 
