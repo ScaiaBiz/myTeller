@@ -44,25 +44,25 @@
 .reverseDanger:hover,
 .reverseDanger:focus,
 .reverseDanger:active {
-	background-color: var(--ButtonDngrBgColor);
-	color: var(--ButtonDngrTxtColor);
-	border: var(--ButtonDngrTxtColor) 2px solid;
+	background-color: var(--error);
+	color: var(--light);
+	border: var(--light) 2px solid;
 	font-weight: bold;
 }
 
-.danger {
-	background-color: var(--ButtonDngrBgColor);
-	color: var(--ButtonDngrTxtColor);
-	border: var(--ButtonDngrTxtColor) 2px solid;
+.abort {
+	background-color: var(--error);
+	color: var(--light);
+	border: var(--dark) 2px solid;
 	font-weight: bold;
 }
 
-.danger:hover,
-.danger:focus,
-.danger:active {
-	background-color: var(--ButtonDngrTxtColor);
-	color: var(--ButtonDngrBgColor);
-	border: var(--ButtonDngrBgColor) 2px solid;
+.abort:hover,
+.abort:focus,
+.abort:active {
+	background-color: var(--light);
+	color: var(--error);
+	border: var(--error) 2px solid;
 }
 
 .base:disabled,
@@ -70,9 +70,9 @@
 .base:hover:disabled,
 .base:focus:disabled,
 .base:active:disabled {
-	background-color: var(--ENDEDtext);
-	color: var(--ENDED);
-	border: var(--ENDED) 2px solid;
+	background-color: var(--lightgray);
+	color: var(--darkgray);
+	border: var(--darkgray) 2px solid;
 }
 
 .small {

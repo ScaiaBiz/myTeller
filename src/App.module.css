@@ -10,9 +10,23 @@
 	--btn8: hsl(288, 100%, 60%);
 	--btn9: hsl(320, 100%, 60%);
 	--abort: hsl(0, 100%, 40%);
+
 	--abortBackground: hsla(0, 100%, 40%, 0.7);
+	--paymentBacground: hsla(0, 0%, 50%, 0.7);
+	/* --paymentBacground: hsla(0, 0%, 0%, 0.75); */
+
 	--confirm: hsl(90, 100%, 40%);
-	--paymentBacground: hsla(0, 0%, 0%, 0.75);
+	--light: white;
+	--lightgray: gainsboro;
+	--darkgray: #5d5d5d;
+	--dark: black;
+	--error: hsl(0, 100%, 40%);
+
+	--ButtonStdBgColor: var(--confirm);
+	--ButtonStdTxtColor: var(--dark);
+	--emptyFild: var(--darkgray);
+
+	--backdrop: var(--paymentBacground);
 }
 
 * {
@@ -20,83 +34,3 @@
 	box-sizing: border-box;
 	user-select: none;
 }
-
-.main {
-	text-align: center;
-	display: flex;
-	width: 100vw;
-	height: 100vh;
-	align-items: center;
-	justify-content: center;
-	background-color: gainsboro;
-}
-
-.content {
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	width: 75%;
-	height: 100%;
-	overflow: hidden;
-}
-.menu {
-	width: 100%;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	height: fit-content;
-	padding: 0 1.5%;
-}
-
-.icons {
-	height: 48px;
-	cursor: pointer;
-}
-
-.icons:hover {
-	border-radius: 35%;
-	background-color: white;
-}
-
-.recap {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 25%;
-	height: 100%;
-	min-width: 250px;
-}
-
-/* Talbet */
-@media (max-width: 1080px) {
-	.main {
-		display: flex;
-		flex-direction: column;
-		overflow: auto;
-		height: auto;
-		min-height: 100vh;
-		width: auto;
-		/* padding: 5% 0; */
-		padding-bottom: 10%;
-	}
-
-	.content {
-		height: fit-content;
-		overflow: visible;
-		width: 100%;
-		margin-bottom: 10%;
-	}
-
-	.icons {
-		height: 32px;
-	}
-
-	.recap {
-		height: fit-content;
-		width: 100%;
-	}
-}
-
-/* 
-@media (max-width: 768px) {} 
-*/

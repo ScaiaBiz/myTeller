@@ -5,17 +5,28 @@ import classes from './Recap.module.css';
 
 import AskTotale from './AskTotale';
 
-function Recap({ list, setBuyngList, removeElement, endOrder, addNewMessage }) {
+import Button from '../../kommon/Button';
+
+function Recap({
+	list,
+	setBuyngList,
+	removeElement,
+	changePrintFormat,
+	endOrder,
+	addNewMessage,
+}) {
 	const [showPayment, setShowPayment] = useState(null);
 
 	const showPaymentHandler = () => {
 		setShowPayment(!showPayment);
 	};
 
+	// console.log({ list });
+
 	const printTotalPrice = () => {
 		let total = 0;
 		list.map(el => {
-			total += el.prezzo * el.quantity;
+			total += el.price * el.quantity;
 		});
 		return total;
 	};
@@ -42,11 +53,20 @@ function Recap({ list, setBuyngList, removeElement, endOrder, addNewMessage }) {
 	};
 
 	const getListData = () => {
-		const data = list.map(el => {
+		const data = list.map((el, i) => {
 			return (
-				<div className={classes.list__element}>
+				<div key={i} className={classes.list__element}>
 					<div className={classes.list__element__value}>
-						{`${el.quantity} x ${el.name} = ${el.prezzo * el.quantity}€`}
+						<input
+							className={classes.checkbox}
+							type='checkbox'
+							value={Boolean(el.type === 'card')}
+							onClick={() => changePrintFormat(el._id)}
+						/>
+						<p
+							className={classes.description}
+						>{`${el.quantity} x ${el.name}`}</p>
+						<p className={classes.rowTot}>{`${el.price * el.quantity}€`}</p>
 					</div>
 
 					<div
@@ -62,36 +82,10 @@ function Recap({ list, setBuyngList, removeElement, endOrder, addNewMessage }) {
 		return data;
 	};
 
-	// const printTest =
-
-	const a = {
-		0: {
-			type: 0,
-			content: 'My Business Title',
-			bold: 1,
-			align: 2,
-			format: 3,
-		},
-		1: {
-			type: 2,
-			value: '1234567890123',
-			width: 300,
-			height: 150,
-			align: 0,
-		},
-		2: { type: 3, value: 'sample qr text', size: 40, align: 2 },
-		3: {
-			type: 4,
-			content:
-				'<div align="center" style="font-size:17px;"></b>This is an HTML text</b></div><br /><br />Another text',
-		},
-		4: { type: 0, content: ' ', bold: 0, align: 0 },
-		5: {
-			type: 0,
-			content: 'This text has<br />two lines',
-			bold: 0,
-			align: 0,
-		},
+	const manualTrigger = () => {
+		const target = document.createElement('a');
+		target.href = `my.bluetoothprint.scheme://http://192.168.1.13:3110/getProudctButtons`;
+		target.click();
 	};
 
 	return (
@@ -107,26 +101,19 @@ function Recap({ list, setBuyngList, removeElement, endOrder, addNewMessage }) {
 				</div>
 				<div className={classes.footer}>
 					<h1 className={classes.total}>Totale: {printTotalPrice()}€</h1>
-					<div
-						className={`${classes.button} ${classes.print}`}
-						// onClick={() => window.print()}
-					>
-						<a href='my.bluetoothprint.scheme://http://192.168.1.12:3001/getProudctButtons'>
-							Stampa
-						</a>
-					</div>
-					<div
-						className={`${classes.button} ${classes.confirmation}`}
-						onClick={showPaymentHandler}
-					>
-						Pagamento
-					</div>
-					<div
-						className={`${classes.button} ${classes.abort}`}
-						onClick={abortOrder}
-					>
-						Cancella tutto
-					</div>
+					<Button value={'test'} action={manualTrigger} />
+					<Button
+						value={'Incassa'}
+						clname={'confirm'}
+						action={showPaymentHandler}
+						disabled={list.length === 0}
+					/>
+					<Button
+						value={'Cancella ordine'}
+						clname={'abort'}
+						action={abortOrder}
+						disabled={list.length === 0}
+					/>
 				</div>
 			</div>
 		</React.Fragment>

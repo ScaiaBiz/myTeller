@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import classes from './AskQuantity.module.css';
 
-import Keyboard from '../kommon/Keyboard';
+import Button from '../../kommon/Button';
+import Keyboard from '../../kommon/Keyboard';
 
 function AskQuantity({ item, confirm, clear }) {
 	const [qty, setQty] = useState('0');
@@ -38,34 +39,36 @@ function AskQuantity({ item, confirm, clear }) {
 			<div className={classes?.hoverBackground} onClick={clear} />
 			<div className={classes.container}>
 				<div className={`${classes.culumns} ${classes.left}`}>
-					<h2>
-						<h1 className={classes.itemName}>{item.name}</h1>Prezzo:{' '}
-						{Number(item.prezzo)}€
-					</h2>
+					<div>
+						<p className={classes.itemName}>{item.name}</p>
+						{Number(item.price)}€
+					</div>
 					<div className={classes.priceInfo}>
-						<h1>
+						<div>
 							Quantità:
 							<p>{Number(qty)}</p>
-						</h1>
-						<h1>
+						</div>
+						<div>
 							Totale:
 							<p style={Number(qty) > 0 ? { color: `var(--abort)` } : {}}>
-								{Number(item.prezzo) * Number(qty)}€
+								{Number(item.price) * Number(qty)}€
 							</p>
-						</h1>
+						</div>
 					</div>
 					<Keyboard action={changeQty} />
 				</div>
 				<div className={`${classes.culumns} ${classes.right}`}>
-					<div className={`${classes.button} ${classes.abort}`} onClick={clear}>
-						Annulla
-					</div>
-					<div
-						className={`${classes.button} ${classes.confirmation}`}
-						onClick={() => Number(qty) > 0 && confirm(Number(qty))}
-					>
-						Ok
-					</div>
+					<Button
+						value='Annulla'
+						clname={`abort button`}
+						action={clear}
+					></Button>
+					<Button
+						value='Ok'
+						clname='confirm button confirmation'
+						c='test'
+						action={() => Number(qty) > 0 && confirm(Number(qty))}
+					></Button>
 				</div>
 			</div>
 		</React.Fragment>

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 
-import { UserCxt } from '../context/UserCxt';
+import { UserCxt } from '../cxt/ctxUser';
 
 import Modal from './Modal';
 import Button from './Button/Button';

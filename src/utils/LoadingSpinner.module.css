@@ -3,38 +3,40 @@
 	position: absolute;
 	align-items: center;
 	justify-content: center;
-	width: 64px;
-	height: 64px;
+	width: 164px;
+	height: 164px;
 }
 .ldsDualRing2 {
 	display: flex;
 	position: absolute;
 	align-items: center;
 	justify-content: center;
-	width: 84px;
-	height: 84px;
+	width: 184px;
+	height: 184px;
 }
 
 .ldsDualRing:after {
 	content: ' ';
 	display: block;
-	width: 46px;
-	height: 46px;
+	width: 86px;
+	height: 86px;
 	margin: 1px;
 	border-radius: 50%;
-	border: 5px solid black;
-	border-color: var(--higlight) transparent var(--higlight) transparent;
+	border: 12px solid black;
+	border-color: var(--light) transparent var(--light) transparent;
+	/* border-color: var(--confirm) transparent var(--confirm) transparent; */
 	animation: ldsDualRing 1.2s linear infinite;
 }
 .ldsDualRing2:after {
 	content: ' ';
 	display: block;
-	width: 76px;
-	height: 76px;
+	width: 176px;
+	height: 176px;
 	margin: 1px;
 	border-radius: 50%;
-	border: 5px solid black;
-	border-color: var(--bgColor) transparent var(--bgColor) transparent;
+	border: 12px solid black;
+	border-color: var(--darkgray) transparent var(--darkgray) transparent;
+	/* border-color: var(--error) transparent var(--error) transparent; */
 	animation: ldsDualRing 1.2s linear infinite reverse;
 }
 

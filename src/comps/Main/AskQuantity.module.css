@@ -4,7 +4,8 @@
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background-color: var(--abortBackground);
+	background-color: var(--paymentBacground);
+	/* background-color: var(--abortBackground); */
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -34,6 +35,7 @@
 	flex-direction: column;
 	justify-content: space-around;
 	align-items: center;
+	font-size: 2rem;
 }
 
 .left {
@@ -47,6 +49,9 @@
 
 .itemName {
 	text-decoration: underline;
+	text-transform: uppercase;
+	font-size: 2.5rem;
+	line-height: 1.5;
 }
 
 .priceInfo {

@@ -17,13 +17,13 @@
 }
 
 .logout {
-	height: 11svh;
 	width: 100%;
 }
 
 .logoutForm {
 	display: flex;
-	justify-content: center;
+	flex-direction: column;
+	font-weight: bold;
 }
 
 @media (max-width: 768px) {

@@ -1,21 +1,23 @@
 import React from 'react';
 import classes from './ProductCard.module.css';
 
-function ProductCard({ btn, setSelected }) {
-	const lastPos = btn._id.toString().length - 1;
+function ProductCard({ btn, setSelected, index }) {
+	const lastPos = index;
+	console.log(index);
+	console.log(lastPos);
 	return (
 		<div
 			key={btn._id}
 			className={classes.button}
 			style={{
 				backgroundColor: `var(--${
-					'btn' + btn._id.toString()[Number(lastPos)]
+					'btn' + lastPos.toString()[lastPos.toString().length - 1]
 				})`,
 			}}
 			onClick={() => setSelected(btn)}
 		>
 			<h1>{btn.name}</h1>
-			<h2>{btn.prezzo}€</h2>
+			<h2>{btn.price}€</h2>
 		</div>
 	);
 }

@@ -1,13 +1,13 @@
 import React, { useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { VALIDATOR_REQUIRE } from '../../utils/validators';
 import { useForm } from '../../hooks/form-hook';
 import { useHttpClient } from '../../hooks/http-hooks';
-import { UserCxt } from '../../context/UserCxt';
+import { UserCxt } from '../../cxt/ctxUser';
 
 import Input from '../../utils/Inputs/Input';
-import Button from '../../utils/Button/Button';
+// import Button from '../../utils/Button/Button';
+import Button from '../../kommon/Button';
 import LoadingSpinner from '../../utils/LoadingSpinner';
 import ErrorModal from '../../utils/ErrorModal';
 
@@ -33,8 +33,6 @@ function Login() {
 	const [user, setUser] = useContext(UserCxt).user;
 	const [forceUserLogout, setForceUserLogout] =
 		useContext(UserCxt).handleUserLogout;
-
-	const goTo = useNavigate();
 
 	const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
@@ -69,7 +67,7 @@ function Login() {
 			);
 			console.log(responseData);
 		}
-		goTo('/');
+		console.log('/');
 		setUser(null);
 	};
 
@@ -89,7 +87,7 @@ function Login() {
 		);
 		if (responseData) {
 			setUser(responseData);
-			goTo('/Timbratore');
+			console.log('/Timbratore');
 		}
 	};
 
@@ -112,9 +110,6 @@ function Login() {
 			);
 		}
 		localStorage.setItem(LS_Area, JSON.stringify(user));
-		if (user?.employee) {
-			goTo('/Timbratore');
-		}
 	}, [setFormData, user]);
 
 	useEffect(() => {
@@ -154,19 +149,21 @@ function Login() {
 
 					{isNew ? (
 						<Button
-							clname={'reverse big'}
+							clname={'reverse'}
 							type='submit'
 							disabled={!formState.isValid}
-							onClick={postSignIn}
+							action={postSignIn}
+							value={'Nuovo'}
 						>
 							AddUser
 						</Button>
 					) : (
 						<Button
-							clname={'confirm big'}
+							clname={'confirm'}
 							type='submit'
 							disabled={!formState.isValid}
-							onClick={postLogin}
+							action={postLogin}
+							value={'Accedi'}
 						>
 							Accedi
 						</Button>
@@ -176,13 +173,15 @@ function Login() {
 		} else {
 			return (
 				<form className={classes.logoutForm}>
+					{user.name}
 					<Button
-						clname={'danger small'}
+						clname={'abort small'}
 						disabled={false}
 						type='submit'
-						onClick={postLogout}
+						action={postLogout}
+						value={`Logout`}
 					>
-						Logout
+						{user.name}: Logout
 					</Button>
 				</form>
 			);
@@ -194,16 +193,15 @@ function Login() {
 		<React.Fragment>
 			{error && <ErrorModal error={error} onClear={clearError} />}
 			{isLoading && <LoadingSpinner asOverlay />}
-			{user ? (
-				<div className={classes.logout}>{showButton()}</div>
-			) : (
-				<div className={classes.container}>{showButton()}</div>
-			)}
-			<div className={classes.imgWrapper}>
-				<img
-					src={require('../../assets/eng_logo.png')}
-					className={classes.logo}
-				/>
+			<div>
+				<div className={classes.imgWrapper}>
+					<img className={classes.logo} />
+				</div>
+				{user ? (
+					<div className={classes.logout}>{showButton()}</div>
+				) : (
+					<div className={classes.container}>{showButton()}</div>
+				)}
 			</div>
 		</React.Fragment>
 	);

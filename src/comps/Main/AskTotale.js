@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import classes from './AskTotale.module.css';
 
-import Keyboard from '../kommon/Keyboard';
+import Keyboard from '../../kommon/Keyboard';
 
-import { usePopupMes } from '../hooks/usePopupMes';
+import { usePopupMes } from '../../hooks/usePopupMes';
 
 function AskTotale({ list, totalPrice, action, clear }) {
 	const [qty, setQty] = useState('0');

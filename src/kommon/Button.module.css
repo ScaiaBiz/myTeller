@@ -1,0 +1,47 @@
+.base {
+	padding: 0.5rem 1.5rem;
+	margin: 0.5rem 0.5rem;
+	outline: none;
+	cursor: pointer;
+	text-decoration: none;
+	display: inline-block;
+	box-shadow: 2px 4px 2px gainsboro;
+	border: #000 1px solid;
+	min-width: fit-content;
+	font-size: 2rem;
+}
+
+.confirm {
+	background-color: var(--confirm);
+}
+
+.abort {
+	background-color: var(--abortBackground);
+	color: var(--light);
+}
+
+.button {
+	padding: 2% 0%;
+	width: 90%;
+	font-size: 2rem;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.confirmation {
+	text-shadow: var(--light) 1px 0px 5px;
+	background-color: var(--confirm);
+	height: 50%;
+}
+
+.small {
+	font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+	.confirmation {
+		height: unset;
+	}
+}

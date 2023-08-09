@@ -20,6 +20,8 @@ function Find({
 	resName = 'data',
 	isArray,
 	width,
+	errorText,
+	setReturnedList = null,
 }) {
 	const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
@@ -34,8 +36,10 @@ function Find({
 	const getData = async () => {
 		try {
 			const d = await sendRequest(url);
-			// console.log(d);
 			setFullRess(d);
+			if (setReturnedList) {
+				setReturnedList(d);
+			}
 			if (resName) {
 				const res = d[resName]?.map(el => {
 					return (
@@ -75,10 +79,6 @@ function Find({
 		getData();
 	}, [trigger]);
 
-	// useEffect(() => {
-	// 	console.log({ list });
-	// }, [list]);
-
 	useEffect(() => {
 		if (formState.isValid) {
 			let val = formState?.inputs[inputId]?.value;
@@ -92,7 +92,6 @@ function Find({
 					}
 				});
 			} else {
-				// console.log({ list });
 				fullRess.map(el => {
 					if (el[driver] === val) {
 						setRes(el);
@@ -108,21 +107,21 @@ function Find({
 	} else {
 		return (
 			<div style={{ width: '100%' }}>
-				{data && (
-					<Input
-						id={inputId}
-						element='dropdown'
-						type='dropdown'
-						list={list}
-						label={label}
-						validators={[VALIDATOR_REQUIRE()]}
-						errorText='Campo obbligatorio'
-						onInput={inputHandler}
-						initValue={initialValue}
-						initIsValid={false}
-						width={width}
-					/>
-				)}
+				{/* {data && ( */}
+				<Input
+					id={inputId}
+					element='dropdown'
+					type='dropdown'
+					list={list || []}
+					label={label}
+					validators={[VALIDATOR_REQUIRE()]}
+					errorText={errorText || 'Campo obbligatorio'}
+					onInput={inputHandler}
+					initValue={initialValue}
+					initIsValid={false}
+					width={width}
+				/>
+				{/* )} */}
 			</div>
 		);
 	}

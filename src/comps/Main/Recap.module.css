@@ -34,11 +34,28 @@
 	width: 90%;
 	padding-bottom: 2%;
 	text-align: left;
+	font-size: 2rem;
 }
 
 .list__element__value {
 	width: 90%;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 2rem;
 }
+
+.checkbox {
+	height: 2rem;
+	width: 2rem;
+}
+
+.description {
+}
+
+.rowTot {
+}
+
 .list__element__delete {
 	display: flex;
 	align-items: center;

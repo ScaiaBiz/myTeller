@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 
 import classes from './AskEdit.module.css';
 
+import Button from '../../kommon/Button';
+
 function AskEdit({ item, clear, confirm }) {
 	let itm = item;
 	if (item === 'NEW') {
-		itm = { _id: Date.now(), name: '', prezzo: '' };
+		itm = { name: '', price: '' };
 		item = null;
 	}
 
@@ -21,8 +23,8 @@ function AskEdit({ item, clear, confirm }) {
 
 	const doAction = e => {
 		const newData = itemData;
-		console.log('AksEdit');
-		console.log(newData);
+		// console.log('AksEdit');
+		// console.log(newData);
 		newData.toDelete = document.getElementById('deleteProduct').checked;
 		confirm(newData);
 	};
@@ -32,7 +34,7 @@ function AskEdit({ item, clear, confirm }) {
 			<div className={classes?.container} onClick={clear} />
 			<div className={classes.content}>
 				<h1>
-					{itemData.name} - {itemData.prezzo}€
+					{itemData.name} - {itemData.price}€
 				</h1>
 				<form className={classes.editForm}>
 					<label htmlFor='name'>Prodotto:</label>
@@ -44,13 +46,13 @@ function AskEdit({ item, clear, confirm }) {
 						value={itemData ? itemData.name : ''}
 						onInput={inputHandler}
 					/>
-					<label htmlFor='prezzo'>Prezzo:</label>
+					<label htmlFor='price'>Prezzo:</label>
 					<input
 						className={classes.editInput}
 						type='number'
-						id='prezzo'
+						id='price'
 						placeholder='Prezzo'
-						value={itemData ? itemData.prezzo : ''}
+						value={itemData ? itemData.price : ''}
 						onInput={inputHandler}
 					/>
 					<label className={classes.checkDelete}>
@@ -63,18 +65,19 @@ function AskEdit({ item, clear, confirm }) {
 					</label>
 				</form>
 				<div className={classes.buttons}>
-					<span
+					<Button
+						value={'Salva'}
+						clname={'confirm'}
 						className={`${classes.btn} ${classes.btnSave}`}
-						onClick={doAction}
-					>
-						Salva
-					</span>
-					<span
+						action={doAction}
+						disabled={itemData.name === '' || itemData.price === ''}
+					/>
+					<Button
+						value={'Annulla'}
+						clname={'abort'}
 						className={`${classes.btn} ${classes.btnAbort}`}
-						onClick={clear}
-					>
-						Annulla
-					</span>
+						action={clear}
+					/>
 				</div>
 			</div>
 		</React.Fragment>

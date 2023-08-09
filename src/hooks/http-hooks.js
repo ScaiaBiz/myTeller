@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef, useEffect, useContext } from 'react';
 
-import { UserCxt } from '../context/UserCxt';
+import { UserCxt } from '../cxt/ctxUser';
 
 export const useHttpClient = () => {
 	const [isLoading, setIsLoading] = useState(false);
@@ -10,7 +10,7 @@ export const useHttpClient = () => {
 	// const SRV_name = process.env.REACT_APP_SRVNAME || 'localhost';
 
 	//	Casa
-	const SRV_debug = process.env.REACT_APP_SRVDEBUG || '192.168.1.12';
+	const SRV_debug = process.env.REACT_APP_SRVDEBUG || '192.168.1.13';
 	//	HotSpot Realme
 	// const SRV_debug = process.env.REACT_APP_SRVDEBUG || '192.168.140.38';
 
@@ -20,7 +20,7 @@ export const useHttpClient = () => {
 
 	const activeHttpReq = useRef([]);
 
-	const currentAppName = 'eng-connection';
+	const currentAppName = 'my-teller';
 
 	let srv;
 
@@ -60,7 +60,9 @@ export const useHttpClient = () => {
 			}
 			if (APP_name !== currentAppName) {
 				console.log(APP_name + ' vs ' + currentAppName);
-				setError('Nome applicazione errato. Verificare variabili ambientali');
+				setError({
+					message: 'Nome applicazione errato. Verificare variabili ambientali',
+				});
 				setIsLoading(false);
 				return;
 			}
@@ -117,7 +119,7 @@ export const useHttpClient = () => {
 				return responseData;
 			} catch (err) {
 				console.log({ err });
-				setError(err || 'Something went wrong, please try again');
+				setError(err || { message: 'Something went wrong, please try again' });
 				setIsLoading(false);
 				throw err;
 			}

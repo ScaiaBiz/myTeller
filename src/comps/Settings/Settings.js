@@ -1,11 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import ReactDOM from 'react-dom';
-
-import AskEdit from './AskEdit';
 
 import classes from './Settings.module.css';
 
+import { UserCxt } from '../../cxt/ctxUser';
+
+import AskEdit from './AskEdit';
+
+import { useHttpClient } from '../../hooks/http-hooks';
+import ErrorModal from '../../utils/ErrorModal';
+import LoadingSpinner from '../../utils/LoadingSpinner';
+
 function Settings({ clear }) {
+	const LS_Area = useContext(UserCxt).LS_Area;
+	const [user, setUser] = useContext(UserCxt).user;
+	const [company, setCompany] = useContext(UserCxt).company;
+	const [event, setEvent] = useContext(UserCxt).event;
+	const [forceUserLogout, setForceUserLogout] =
+		useContext(UserCxt).handleUserLogout;
+
+	const { isLoading, error, sendRequest, clearError } = useHttpClient();
+
 	const [data, setData] = useState([]);
 	const [visulaData, setVisulaData] = useState(null);
 	const [showAskEdit, setShowAskEdit] = useState(false);
@@ -19,49 +34,25 @@ function Settings({ clear }) {
 		setShowAskEdit(!showAskEdit);
 	};
 
-	const modifySelected = el => {
+	const modifySelected = async art => {
 		handelShowAskEdit();
-		let newData = [];
-		let count = 0;
+		const updated = await sendRequest(
+			'event/editArticle',
+			'POST',
+			{
+				eventId: event._id,
+				isNew: isNew,
+				art: art,
+			},
+			{
+				'Content-Type': 'application/json',
+			}
+		);
 		if (isNew) {
-			newData = data.map(d => {
-				const newEl = { ...d };
-				newEl._id = count;
-				count++;
-				// if (d._id == el._id) {
-				// 	newEl.name = el.name;
-				// 	newEl.prezzo = Number(el.prezzo);
-				// }
-				console.log(count);
-				console.log(newEl);
-				return newEl;
-			});
-			el._id = count;
-			setProductData([...newData, el]);
 			setIsNew(false);
-		} else {
-			newData = data
-				.filter(e => {
-					if (e.toDelete) {
-						console.log('deletto');
-						return false;
-					}
-					return true;
-				})
-				.map(d => {
-					const newEl = { ...d };
-					newEl._id = count;
-					count++;
-					if (d._id == el._id) {
-						newEl.name = el.name;
-						newEl.prezzo = Number(el.prezzo);
-					}
-					console.log(count);
-					console.log(newEl);
-					return newEl;
-				});
-			setProductData(newData);
 		}
+		setEvent(updated);
+		setData(updated.articles);
 	};
 
 	const activateAskEdit = () => {
@@ -76,7 +67,6 @@ function Settings({ clear }) {
 	};
 
 	const addNewProduct = () => {
-		setIsNew(true);
 		setSelected('NEW');
 	};
 
@@ -88,14 +78,20 @@ function Settings({ clear }) {
 
 	useEffect(() => {
 		if (selected) {
+			if (selected === 'NEW') {
+				setIsNew(true);
+			} else {
+				setIsNew(false);
+			}
 			handelShowAskEdit();
 		}
 	}, [selected]);
 
 	//>>>>>>>>>>>>>>>>>>>> Gestisci dati prodotti <<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-	const getProductsData = () => {
-		const _data = JSON.parse(localStorage.getItem('myTellerData'));
+	const getProductsData = async () => {
+		// const _data = JSON.parse(localStorage.getItem('myTellerData'));
+		const _data = await sendRequest(`event/articlesList/${event._id}`);
 		setData(_data);
 	};
 
@@ -111,7 +107,7 @@ function Settings({ clear }) {
 			return (
 				<div key={d._id} className={classes.productRow}>
 					<span className={classes.productName}>{d.name}</span>
-					<span className={classes.productPrice}>{d.prezzo}€</span>
+					<span className={classes.productPrice}>{d.price}€</span>
 					<span
 						className={classes.edit}
 						onClick={() => {
@@ -130,13 +126,24 @@ function Settings({ clear }) {
 		getProductsData();
 	}, []);
 
+	/**
+	 * >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	 *
+	 * Gestione caricamenti COMPANY e EVENT
+	 *
+	 * <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	 */
+
 	return (
 		<React.Fragment>
+			{error && <ErrorModal error={error} onClear={clearError} />}
+			{isLoading && <LoadingSpinner asOverlay />}
 			{showAskEdit && activateAskEdit()}
 			<div className={classes.container}>
 				<h1 className={classes.closer} onClick={() => clear(reloadNeeded)}>
 					Chiudi
 				</h1>
+
 				<div className={classes.productContainer}>{visulaData}</div>
 				<h1 className={classes.productAdd} onClick={addNewProduct}>
 					Aggiungi

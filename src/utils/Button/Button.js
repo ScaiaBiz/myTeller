@@ -28,8 +28,6 @@ const Button = props => {
 		// );
 	}
 
-	const setAutofocus = () => {};
-
 	return (
 		<button
 			className={classes.base + ' ' + btncls()}
@@ -37,7 +35,6 @@ const Button = props => {
 			type={props.type}
 			onClick={props.onClick}
 			disabled={props.disabled}
-			// style={props.style}
 			autoFocus={props.autofocus}
 		>
 			{props.children}

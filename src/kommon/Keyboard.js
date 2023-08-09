@@ -11,7 +11,11 @@ function Keyboard({ action }) {
 			<div className={classes.buttons}>
 				{k_nubers.map(b => {
 					return (
-						<div className={classes.keyNumb} onClick={() => action(b.value)}>
+						<div
+							key={b.value}
+							className={classes.keyNumb}
+							onClick={() => action(b.value)}
+						>
 							{b.value}
 						</div>
 					);
