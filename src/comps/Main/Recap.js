@@ -59,7 +59,7 @@ function Recap({
 							className={classes.checkbox}
 							type='checkbox'
 							value={Boolean(el.type === 'card')}
-							onClick={() => changePrintFormat(el._id)}
+							onClick={() => changePrintFormat(el.listId)}
 						/>
 						<p
 							className={classes.description}
