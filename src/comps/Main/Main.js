@@ -70,28 +70,41 @@ function Main({ children }) {
 	const addToList = element => {
 		const el = {
 			...element,
-			_id: Number(buyngList.length) + 1,
+			listId: Number(buyngList.length) + 1,
+			type: 'text',
 		};
+		console.log({ el });
 		setBuyngList([...buyngList, el]);
 	};
 
 	const removeFromList = element => {
 		const newList = buyngList.filter(el => {
-			if (el._id != element) {
+			if (el.listId != element) {
 				return true;
 			}
 		});
-		setBuyngList(newList);
+		console.log({ newList });
+		const reordered = newList.map((el, i) => {
+			el.listId = i;
+			return el;
+		});
+		setBuyngList(reordered);
 	};
 
 	const changePrintFormat = element => {
-		const newList = buyngList.map(el => {
-			if (el._id != element) {
-				el.type = 'card';
-				return el;
-			} else {
-				return el;
+		const newList = buyngList.map((el, i) => {
+			if (el.listId == element) {
+				switch (el.type) {
+					case 'card':
+						el.type = 'text';
+						break;
+					case 'text':
+						el.type = 'card';
+						break;
+				}
 			}
+			el.listId = i;
+			return el;
 		});
 		setBuyngList(newList);
 	};
@@ -102,9 +115,12 @@ function Main({ children }) {
 			const prevMovements = JSON.parse(
 				window.localStorage.getItem('myTellerMovments')
 			);
+			const date = new Date();
 			const newMovement = {
 				products: buyngList,
-				datetime: new Date(),
+				datetime: date,
+				date: date.toLocaleDateString('it-IT'),
+				time: date.toLocaleTimeString('it-IT'),
 				earn: cash,
 			};
 			let finalMovements;
@@ -124,6 +140,12 @@ function Main({ children }) {
 			_result = addNewMessage('ERROR', 'Impossibile registrare incasso');
 		}
 		_result && setBuyngList([]);
+	};
+
+	const printOrder = id => {
+		const target = document.createElement('a');
+		target.href = `my.bluetoothprint.scheme://http://192.168.1.13:3110/getProudctButtons/${id}`;
+		target.click();
 	};
 
 	const updateTotalQty = products => {
@@ -277,12 +299,16 @@ function Main({ children }) {
 							}
 						/>
 
-						{/* <Account /> */}
-						<Button
-							value={`${user.name}`}
-							clname={'confirm'}
-							action={showProfileHandler}
-						/>
+						<div className={classes.profile}>
+							<p>PROFILO</p>
+							<Button
+								value={`${user.name}`}
+								clname={'confirm small'}
+								action={showProfileHandler}
+							/>
+							<b>{company.name}</b>
+							<p>{event.name}</p>
+						</div>
 						<img
 							src={iconChart}
 							className={classes.icons}
@@ -292,8 +318,10 @@ function Main({ children }) {
 							}
 						/>
 					</div>
-					{showButtons && event && company && (
+					{showButtons && event && company ? (
 						<ButtonsBoard add={addToList} event={event} />
+					) : (
+						<p>Seleziona evento dalla schermata profilo</p>
 					)}
 				</div>
 				<div className={classes.recap}>
