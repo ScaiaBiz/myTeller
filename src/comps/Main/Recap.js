@@ -21,8 +21,6 @@ function Recap({
 		setShowPayment(!showPayment);
 	};
 
-	// console.log({ list });
-
 	const printTotalPrice = () => {
 		let total = 0;
 		list.map(el => {
@@ -69,23 +67,17 @@ function Recap({
 						<p className={classes.rowTot}>{`${el.price * el.quantity}€`}</p>
 					</div>
 
-					<div
-						className={classes.list__element__delete}
-						on
-						onClick={() => removeElement(el._id)}
+					<Button
+						action={() => removeElement(el.listId)}
+						value={'X'}
+						clname={'abort small'}
 					>
 						X
-					</div>
+					</Button>
 				</div>
 			);
 		});
 		return data;
-	};
-
-	const manualTrigger = () => {
-		const target = document.createElement('a');
-		target.href = `my.bluetoothprint.scheme://http://192.168.1.13:3110/getProudctButtons`;
-		target.click();
 	};
 
 	return (
@@ -101,7 +93,7 @@ function Recap({
 				</div>
 				<div className={classes.footer}>
 					<h1 className={classes.total}>Totale: {printTotalPrice()}€</h1>
-					<Button value={'test'} action={manualTrigger} />
+					{/* <Button value={'test'} action={manualTrigger} /> */}
 					<Button
 						value={'Incassa'}
 						clname={'confirm'}
