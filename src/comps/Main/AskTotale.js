@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import classes from './AskTotale.module.css';
 
 import Keyboard from '../../kommon/Keyboard';
+import Button from '../../kommon/Button';
 
 import { usePopupMes } from '../../hooks/usePopupMes';
 
@@ -58,15 +59,18 @@ function AskTotale({ list, totalPrice, action, clear }) {
 					<Keyboard action={changeQty} />
 				</div>
 				<div className={`${classes.culumns} ${classes.right}`}>
-					<div className={`${classes.button} ${classes.abort}`} onClick={clear}>
-						Annulla
-					</div>
-					<div
+					<Button
+						value={'Annulla'}
+						className={`${classes.button} ${classes.abort}`}
+						clname={'abort'}
+						action={clear}
+					/>
+					<Button
+						value={'Esegui'}
 						className={`${classes.button} ${classes.confirmation}`}
-						onClick={confirmation}
-					>
-						Esegui
-					</div>
+						clname={'confirm confirmation'}
+						action={confirmation}
+					/>
 				</div>
 			</div>
 		</React.Fragment>
