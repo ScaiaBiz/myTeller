@@ -3,8 +3,6 @@ import classes from './ProductCard.module.css';
 
 function ProductCard({ btn, setSelected, index }) {
 	const lastPos = index;
-	console.log(index);
-	console.log(lastPos);
 	return (
 		<div
 			key={btn._id}

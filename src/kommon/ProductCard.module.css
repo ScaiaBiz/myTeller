@@ -9,10 +9,9 @@
 	height: 20%;
 	max-height: 200px;
 	margin: 2%;
-	border: 1px solid black;
-	border-radius: 5px;
-	box-shadow: grey 5px 5px 10px;
-	text-shadow: white 0px 0px 7px;
+	border: 1px solid var(--dark);
+	box-shadow: var(--darkgray) 5px 5px 10px;
+	text-shadow: var(--light) 0px 0px 7px;
 }
 
 @media (max-width: 1080px) {
