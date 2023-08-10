@@ -1,3 +1,8 @@
+.prePrint {
+	display: none;
+	background-color: red;
+}
+
 .main {
 	text-align: center;
 	display: flex;
@@ -12,7 +17,7 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
-	width: 75%;
+	width: 65%;
 	height: 100%;
 	overflow: hidden;
 }
@@ -49,7 +54,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: 25%;
+	width: 35%;
 	height: 100%;
 	min-width: 250px;
 }

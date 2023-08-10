@@ -5,6 +5,10 @@ import classes from './Main.module.css';
 
 import { UserCxt } from '../../cxt/ctxUser';
 
+import { useHttpClient } from '../../hooks/http-hooks';
+import ErrorModal from '../../utils/ErrorModal';
+import LoadingSpinner from '../../utils/LoadingSpinner';
+
 import PopupBoard from '../../kommon/popup/PopupBoard';
 import ButtonsBoard from '../../comps/Main/ButtonsBoard';
 import Recap from '../../comps/Main/Recap';
@@ -26,6 +30,7 @@ function Main({ children }) {
 	const [forceUserLogout, setForceUserLogout] =
 		useContext(UserCxt).handleUserLogout;
 
+	const { isLoading, error, sendRequest, clearError } = useHttpClient();
 	//PopupMessage ---------------------------------------------
 	// const { removeMessage, messages, addNewMessage } = usePopupMes();
 
@@ -35,6 +40,8 @@ function Main({ children }) {
 	const [count, setCount] = useState(1);
 	const [showButtons, setShowButtons] = useState(false);
 	const [loadData, setLoadData] = useState(false);
+
+	const [lastTransaction, setLastTransaction] = useState(null);
 
 	const ref = useRef('');
 
@@ -73,7 +80,6 @@ function Main({ children }) {
 			listId: Number(buyngList.length) + 1,
 			type: 'text',
 		};
-		console.log({ el });
 		setBuyngList([...buyngList, el]);
 	};
 
@@ -83,7 +89,6 @@ function Main({ children }) {
 				return true;
 			}
 		});
-		console.log({ newList });
 		const reordered = newList.map((el, i) => {
 			el.listId = i;
 			return el;
@@ -109,98 +114,132 @@ function Main({ children }) {
 		setBuyngList(newList);
 	};
 
-	const endOrder = (post, cash) => {
+	const endOrder = async (post, cash) => {
 		let _result;
 		if (post === true) {
-			const prevMovements = JSON.parse(
-				window.localStorage.getItem('myTellerMovments')
-			);
 			const date = new Date();
+
 			const newMovement = {
-				products: buyngList,
+				productsList: buyngList,
 				datetime: date,
 				date: date.toLocaleDateString('it-IT'),
 				time: date.toLocaleTimeString('it-IT'),
 				earn: cash,
+				refUser: user._id,
+				refEvent: event._id,
 			};
-			let finalMovements;
-			if (prevMovements) {
-				finalMovements = [...prevMovements, newMovement];
-			} else {
-				finalMovements = [newMovement];
-			}
-			window.localStorage.setItem(
-				'myTellerMovments',
-				JSON.stringify(finalMovements)
+
+			const transaction = await sendRequest(
+				'event/newTransaction',
+				'POST',
+				{
+					eventId: event._id,
+					transaction: newMovement,
+					earn: cash,
+				},
+				{
+					'Content-Type': 'application/json',
+				}
 			);
-			updateTotalEarn(cash);
-			updateTotalQty(buyngList);
+
+			setBuyngList([]);
+			setLastTransaction(transaction);
 			_result = addNewMessage('OK', 'Nuovo incasso registrato');
 		} else {
 			_result = addNewMessage('ERROR', 'Impossibile registrare incasso');
 		}
-		_result && setBuyngList([]);
 	};
 
-	const printOrder = id => {
-		const target = document.createElement('a');
-		target.href = `my.bluetoothprint.scheme://http://192.168.1.13:3110/getProudctButtons/${id}`;
-		target.click();
-	};
+	useEffect(() => {
+		if (lastTransaction) {
+			definePrintSchema();
+		}
+	}, [lastTransaction]);
 
-	const updateTotalQty = products => {
-		console.log({ products });
-		const prevTotQty = JSON.parse(
-			window.localStorage.getItem('myTellerTotalQuantity')
-		);
-		let finalTotQty = {};
-		if (prevTotQty) {
-			finalTotQty = { ...prevTotQty };
-		}
-		console.log(finalTotQty);
-		if (products.length == 0) {
-			console.log('No products to register');
-			return;
-		}
-		console.log('Product presenti');
-		products.forEach(prod => {
-			console.log({ prod });
-			let target = prod.name + prod.price;
-			finalTotQty[target] = {};
-			if (!finalTotQty[target].name) {
-				finalTotQty[target].name = prod.name;
+	const definePrintSchema = () => {
+		const products = lastTransaction.productsList;
+		let p_data = [];
+
+		const maxL = 31;
+
+		const ESC = '\u001B';
+		const GS = '\u001D';
+		const BoldOn = ESC + 'E' + '\u0001';
+		const BoldOff = ESC + 'E' + '\0';
+		const DoubleOn = GS + '!' + '\u0011'; // 2x sized text (double-high + double-wide)
+		const DoubleOff = GS + '!' + '\0';
+
+		const separator = `\n${centerText(
+			`----------------------`,
+			maxL,
+			false
+		)}\n`;
+		const header_company = `${centerText(`${company.name}`, maxL, false)}\n`;
+		const header_event = `${BoldOn}${centerText(
+			`${event.name}`,
+			maxL,
+			false
+		)}${BoldOff}\n\n`;
+		const footer = '\n\n' + centerText(`Grazie e buon proseguimento!`, maxL);
+
+		products.map(p => {
+			let str = '';
+			switch (p.type) {
+				case 'text':
+					str = `\n${DoubleOn}${centerText(
+						`${p.name} X ${p.quantity}`,
+						maxL,
+						true
+					)}${DoubleOff}\n`;
+
+					p_data.push(str);
+					break;
+				case 'card':
+					for (let i = 0; i < p.quantity; i++) {
+						p_data.push(separator);
+						p_data.push(header_company);
+						p_data.push(header_event);
+						p_data.push(
+							`${DoubleOn}${centerText(`${p.name}`, maxL, true)}${DoubleOff}\n`
+						);
+						// p_data.push(footer);
+					}
+					break;
+
+				default:
+					break;
 			}
-			if (!finalTotQty[target].qty) {
-				finalTotQty[target].qty = 0;
-			}
-			if (!finalTotQty[target].totEarn) {
-				finalTotQty[target].totEarn = 0;
-			}
-			finalTotQty[target].qty =
-				Number(finalTotQty[target].qty) + Number(prod.quantity);
-			finalTotQty[target].price = Number(prod.price);
-			finalTotQty[target].totEarn =
-				Number(finalTotQty[target].totEarn) +
-				Number(prod.quantity * prod.price);
 		});
-		window.localStorage.setItem(
-			'myTellerTotalQuantity',
-			JSON.stringify(finalTotQty)
-		);
+		p_data.unshift(header_event);
+		p_data.unshift(header_company);
+		p_data.push(footer);
+		document.getElementById('pre_print').innerText = p_data.join('');
+		printOrder(p_data.join(''));
 	};
 
-	const updateTotalEarn = earn => {
-		const prevTotal = JSON.parse(
-			window.localStorage.getItem('myTellerTotalEarn')
-		);
-		let newTotal;
-		if (!prevTotal) {
-			newTotal = { euro: Number(earn) };
-		} else {
-			newTotal = prevTotal;
-			newTotal.euro = Number(newTotal.euro) + Number(earn);
+	const centerText = (str, maxL, double = false) => {
+		if (double) {
+			maxL = maxL / 2;
 		}
-		window.localStorage.setItem('myTellerTotalEarn', JSON.stringify(newTotal));
+		let length = str.length;
+		if (length < maxL) {
+			let residual = (maxL - length) / 2;
+			for (let i = 0; i < residual; i++) {
+				str = '\u0020' + str;
+			}
+		}
+		return str;
+	};
+	const printOrder = id => {
+		// const target = document.createElement('a');
+		// let test = await sendRequest('print/transaction');
+		// // target.href = `my.bluetoothprint.scheme://http://192.168.1.13:3110/print/transaction`;
+		// target.href = `rawbt:data:text/palin;${test}`;
+		// target.click();
+		const S = '#Intent;scheme=rawbt;';
+		const P = 'package=ru.a402d.rawbtprinter;end;';
+		const textEncoded = encodeURI(id);
+		window.location.href = 'intent:' + textEncoded + S + P;
 	};
 
 	//----------------------------------------------------------------
@@ -210,7 +249,6 @@ function Main({ children }) {
 	const [showSettings, setShowSettings] = useState(false);
 
 	const showSettingsHandler = r => {
-		// console.log({ r });
 		if (r === true) {
 			setLoadData(true);
 			addNewMessage('MESSAGE', 'Modifiche inserite');
@@ -278,6 +316,9 @@ function Main({ children }) {
 
 	return (
 		<React.Fragment>
+			{error && <ErrorModal error={error} onClear={clearError} />}
+			{isLoading && <LoadingSpinner asOverlay />}
+
 			{showSettings && openSettings()}
 			{showAnalytics && openAnalytics()}
 			{showProfile && openProfile()}
@@ -306,8 +347,8 @@ function Main({ children }) {
 								clname={'confirm small'}
 								action={showProfileHandler}
 							/>
-							<b>{company.name}</b>
-							<p>{event.name}</p>
+							<b>{company?.name}</b>
+							<p>{event?.name}</p>
 						</div>
 						<img
 							src={iconChart}
@@ -323,6 +364,17 @@ function Main({ children }) {
 					) : (
 						<p>Seleziona evento dalla schermata profilo</p>
 					)}
+					<pre id='pre_print' className={classes.prePrint}></pre>
+					{/* <Button
+						value={'Define'}
+						action={definePrintSchema}
+					/> */}
+					{/* <Button
+						value={'Print'}
+						action={() =>
+							printOrder(document.getElementById('pre_print').innerText)
+						}
+					/> */}
 				</div>
 				<div className={classes.recap}>
 					<Recap
