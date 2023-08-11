@@ -49,7 +49,7 @@ function AskTotale({ list, totalPrice, action, clear }) {
 			<div className={classes.container}>
 				<div className={`${classes.culumns} ${classes.left}`}>
 					<h1 className={classes.itemName}>Totale: {Number(totalPrice)}€</h1>
-					<h1>Dato: {Number(qty)}</h1>
+					<h2>Dato: {Number(qty)}</h2>
 					<h1>
 						Resto:{' '}
 						<b style={Number(qty) > 0 ? { color: `var(--confirm)` } : {}}>
@@ -62,11 +62,11 @@ function AskTotale({ list, totalPrice, action, clear }) {
 					<Button
 						value={'Annulla'}
 						className={`${classes.button} ${classes.abort}`}
-						clname={'abort'}
+						clname={'abort small'}
 						action={clear}
 					/>
 					<Button
-						value={'Esegui'}
+						value={'Fatto'}
 						className={`${classes.button} ${classes.confirmation}`}
 						clname={'confirm confirmation'}
 						action={confirmation}
