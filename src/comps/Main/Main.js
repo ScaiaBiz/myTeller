@@ -14,6 +14,8 @@ import ButtonsBoard from '../../comps/Main/ButtonsBoard';
 import Recap from '../../comps/Main/Recap';
 import Button from '../../kommon/Button';
 
+import Reprint from '../Reprint/Reprint';
+
 import Account from '../Account/Account';
 
 import Settings from '../../comps/Settings/Settings';
@@ -22,7 +24,7 @@ import iconSettings from '../../assets/settings_48.png';
 import iconChart from '../../assets/chart_48.png';
 import Analytics from '../../comps/Analytics/Analytics';
 
-function Main({ children }) {
+function Main() {
 	const LS_Area = useContext(UserCxt).LS_Area;
 	const [user, setUser] = useContext(UserCxt).user;
 	const [company, setCompany] = useContext(UserCxt).company;
@@ -41,7 +43,7 @@ function Main({ children }) {
 	const [showButtons, setShowButtons] = useState(false);
 	const [loadData, setLoadData] = useState(false);
 
-	const [lastTransaction, setLastTransaction] = useState(null);
+	const [lastTransaction, setLastTransaction] = useState();
 
 	const ref = useRef('');
 
@@ -129,7 +131,7 @@ function Main({ children }) {
 				refEvent: event._id,
 			};
 
-			const transaction = await sendRequest(
+			const resData = await sendRequest(
 				'event/newTransaction',
 				'POST',
 				{
@@ -143,7 +145,8 @@ function Main({ children }) {
 			);
 
 			setBuyngList([]);
-			setLastTransaction(transaction);
+			setEvent(resData.event);
+			setLastTransaction(resData.transaction);
 			_result = addNewMessage('OK', 'Nuovo incasso registrato');
 		} else {
 			_result = addNewMessage('ERROR', 'Impossibile registrare incasso');
@@ -156,8 +159,8 @@ function Main({ children }) {
 		}
 	}, [lastTransaction]);
 
-	const definePrintSchema = () => {
-		const products = lastTransaction.productsList;
+	const definePrintSchema = (data = null) => {
+		const products = data ? data : lastTransaction.productsList;
 		let p_data = [];
 
 		const maxL = 31;
@@ -230,6 +233,7 @@ function Main({ children }) {
 		}
 		return str;
 	};
+
 	const printOrder = id => {
 		// const target = document.createElement('a');
 		// let test = await sendRequest('print/transaction');
@@ -240,6 +244,27 @@ function Main({ children }) {
 		const P = 'package=ru.a402d.rawbtprinter;end;';
 		const textEncoded = encodeURI(id);
 		window.location.href = 'intent:' + textEncoded + S + P;
+	};
+
+	//----------------------------------------------------------------
+	// Reprint last Order
+	//----------------------------------------------------------------
+
+	const [showReprint, setShowReprint] = useState(false);
+
+	const showReprintHandler = () => {
+		setShowReprint(!showReprint);
+	};
+
+	const openReprintForm = () => {
+		const reprint = (
+			<Reprint
+				list={lastTransaction}
+				endOrder={definePrintSchema}
+				clear={showReprintHandler}
+			/>
+		);
+		return ReactDOM.createPortal(reprint, document.getElementById('overData'));
 	};
 
 	//----------------------------------------------------------------
@@ -271,7 +296,9 @@ function Main({ children }) {
 	};
 
 	const openAnalytics = () => {
-		const analitycsPage = <Analytics clear={showAnalyticsHandler} />;
+		const analitycsPage = (
+			<Analytics clear={showAnalyticsHandler} event={event} />
+		);
 		return ReactDOM.createPortal(
 			analitycsPage,
 			document.getElementById('overData')
@@ -322,6 +349,7 @@ function Main({ children }) {
 			{showSettings && openSettings()}
 			{showAnalytics && openAnalytics()}
 			{showProfile && openProfile()}
+			{showReprint && openReprintForm()}
 
 			<div className={classes.main}>
 				<PopupBoard
@@ -375,6 +403,11 @@ function Main({ children }) {
 							printOrder(document.getElementById('pre_print').innerText)
 						}
 					/> */}
+					{/* <Button
+						value={'Ristampa ultimo'}
+						action={showReprintHandler}
+						disabled={lastTransaction.length == 0}
+					/> */}
 				</div>
 				<div className={classes.recap}>
 					<Recap
@@ -384,6 +417,11 @@ function Main({ children }) {
 						changePrintFormat={changePrintFormat}
 						endOrder={endOrder}
 						addNewMessage={addNewMessage}
+					/>
+					<Button
+						value={'Ristampa ultimo'}
+						action={showReprintHandler}
+						disabled={!lastTransaction}
 					/>
 				</div>
 			</div>
