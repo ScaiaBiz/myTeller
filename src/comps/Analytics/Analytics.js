@@ -2,47 +2,26 @@ import React, { useState } from 'react';
 
 import classes from './Analytics.module.css';
 
-function Analytics({ clear }) {
-	const [update, setUpdate] = useState(false);
-
-	let totalEarn = JSON.parse(window.localStorage.getItem('myTellerTotalEarn'));
+function Analytics({ event, clear }) {
+	let totalEarn = event.totalEarn;
 
 	const getProductsEearn = () => {
-		let productsEarns = JSON.parse(
-			window.localStorage.getItem('myTellerTotalQuantity')
-		);
+		let productsEarns = event.transactionsRecacp;
 		console.log({ productsEarns });
 		if (productsEarns) {
-			const _list = Object.keys(productsEarns).map(p => {
-				console.log(productsEarns[p]);
+			const _list = productsEarns.map(p => {
+				console.log(p);
 				return (
 					<div className={classes.prodLine}>
-						<span className={classes.prodLine__data}>
-							{productsEarns[p].name}
-						</span>{' '}
-						<span className={classes.prodLine__data}>
-							Prezzo: {productsEarns[p].price}€
-						</span>{' '}
-						<span className={classes.prodLine__nr}>
-							Pz. {productsEarns[p].qty}
-						</span>{' '}
-						<span className={classes.prodLine__data}>
-							Tot: {productsEarns[p].totEarn}€
-						</span>
+						<span className={classes.prodLine__data}>{p.name}</span>{' '}
+						<span className={classes.prodLine__data}>Prezzo: {p.price}€</span>{' '}
+						<span className={classes.prodLine__nr}>Pz: {p.quantity}</span>{' '}
+						<span className={classes.prodLine__data}>Tot: {p.totEarn}€</span>
 					</div>
 				);
 			});
 			return _list;
 		}
-	};
-
-	const resetEarnsData = () => {
-		console.log('Azzero dati in localStorage');
-		// localStorage.setItem('myTellerData', JSON.stringify(pData));
-		localStorage.setItem('myTellerMovments', JSON.stringify([]));
-		localStorage.setItem('myTellerTotalQuantity', JSON.stringify([]));
-		localStorage.setItem('myTellerTotalEarn', JSON.stringify({ euro: 0 }));
-		setUpdate(!update);
 	};
 
 	return (
@@ -61,9 +40,6 @@ function Analytics({ clear }) {
 					Di cui:
 					{getProductsEearn()}
 				</div>
-				<h1 className={classes.reset} onClick={resetEarnsData} update>
-					Cancella dati incassi
-				</h1>
 			</div>
 		</div>
 	);
