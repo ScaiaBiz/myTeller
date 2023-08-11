@@ -16,7 +16,7 @@ export const useHttpClient = () => {
 
 	const userCtx = useContext(UserCxt);
 
-	let debug = true;
+	let debug = false;
 
 	const activeHttpReq = useRef([]);
 
@@ -25,7 +25,7 @@ export const useHttpClient = () => {
 	let srv;
 
 	if (!debug) {
-		// srv = `https://sbiz-engconnectionsrv.azurewebsites.net/`;
+		srv = `https://sbiz-mytellersrv.azurewebsites.net/`;
 	} else {
 		srv = `http://${SRV_debug}:${SRV_port}/`;
 	}
