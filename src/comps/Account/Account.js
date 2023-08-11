@@ -48,7 +48,7 @@ function Account({ clear }) {
 							errorText={'none'}
 						/>
 					)}
-					<Button value={'Crea nuovo evento'} />
+					{/* <Button value={'Crea nuovo evento'} /> */}
 				</div>
 
 				<Button value={'Chiudi'} clname={'danger'} action={clear} />
